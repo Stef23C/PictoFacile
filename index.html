@@ -4,9 +4,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PictoFacile – Frasi, storie e routine</title>
+<title>CAA Duo – Frasi e storie illustrate</title>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#278b84">
+<meta name="theme-color" content="#eee9ff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -466,7 +466,7 @@ body.child-session #planChildViewer:not([hidden]),body.child-session #planChildV
 
 <header>
  <div>
-  <h1>🌱 PictoFacile</h1>
+  <h1>🌱 CAA Duo</h1>
   <p>Costruisci frasi con pittogrammi · Italiano / Français</p>
  </div>
  <div class="caa-parent-top"><button type="button" id="caaBoardOpen">🎨 Lavagna</button><button type="button" id="caaParentSettingsOpen" aria-haspopup="dialog">⚙ Impostazioni</button><select id="language" aria-label="Lingua">
@@ -482,14 +482,6 @@ body.child-session #planChildViewer:not([hidden]),body.child-session #planChildV
 </div>
 
 <main>
-<section class="panel" id="offlineLibraryPanel" aria-labelledby="offlineLibraryHeading">
-<h2 id="offlineLibraryHeading">📦 Libreria ARASAAC offline · Test</h2>
-<p class="hint">Con Internet, cerca una parola e scarica fino a 12 immagini. Poi disattiva Internet e premi «Mostra immagini salvate». I dati restano su questo dispositivo e in questo browser. Funzione sperimentale: le immagini non sono ancora collegate alle frasi o alle routine.</p>
-<div class="controls"><label>Lingua <select id="offlineLang"><option value="it">Italiano</option><option value="fr">Français</option></select></label><input id="offlineTerm" placeholder="Es. mangiare, scuola, giocare" aria-label="Parola da scaricare"><button type="button" id="offlineDownload" class="primary">Scarica pittogrammi</button><button type="button" id="offlineShow">Mostra immagini salvate</button></div>
-<p class="hint" id="offlineStatus" role="status" aria-live="polite">Nessun download avviato.</p><div class="results" id="offlineResults"></div>
-<p class="hint">Pittogrammi: Sergio Palao · ARASAAC · Governo di Aragona · CC BY-NC-SA 4.0 · <a href="https://arasaac.org" target="_blank" rel="noopener">arasaac.org</a>. Non cancellare i dati del sito/browser senza un backup.</p>
-</section>
-
 
 <section class="panel">
  <h2 id="searchTitle">Cerca pittogrammi ARASAAC</h2>
@@ -5744,28 +5736,6 @@ document.addEventListener('keydown',e=>{
  if(e.key==='ArrowLeft'){const b=nav?.querySelector('button:first-child');if(b&&!b.disabled){e.preventDefault();e.stopImmediatePropagation();b.click()}}
  else if(e.key==='ArrowRight'){const b=nav?.querySelector('button:nth-child(2)');if(b&&!b.disabled){e.preventDefault();e.stopImmediatePropagation();b.click()}}
 },true);
-</script>
-<script>
-/* PictoFacile Beta 2 - isolated, opt-in offline pictogram experiment */
-(()=>{
- const $=id=>document.getElementById(id), DB='PictoFacileOfflinePictos', STORE='pictos';
- function openDb(){return new Promise((resolve,reject)=>{const req=indexedDB.open(DB,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(STORE))req.result.createObjectStore(STORE,{keyPath:'key'})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
- async function putAll(items){const db=await openDb();try{await new Promise((resolve,reject)=>{const tx=db.transaction(STORE,'readwrite');items.forEach(item=>tx.objectStore(STORE).put(item));tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error)})}finally{db.close()}}
- async function getAll(){const db=await openDb();try{return await new Promise((resolve,reject)=>{const req=db.transaction(STORE,'readonly').objectStore(STORE).getAll();req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}finally{db.close()}}
- const status=$('offlineStatus');
- function show(items){const host=$('offlineResults');host.replaceChildren();for(const item of items){const card=document.createElement('div');card.className='tile';const img=document.createElement('img');const url=URL.createObjectURL(item.blob);img.src=url;img.alt=item.label;img.loading='lazy';img.addEventListener('load',()=>URL.revokeObjectURL(url),{once:true});const label=document.createElement('strong');label.textContent=item.label+' ('+item.lang+')';card.append(img,label);host.append(card)}status.textContent=items.length+' pittogrammi conservati su questo dispositivo.'}
- $('offlineShow').addEventListener('click',async()=>{try{show(await getAll())}catch(e){status.textContent='Impossibile aprire la libreria locale: '+e.message}});
- $('offlineDownload').addEventListener('click',async()=>{
- const term=$('offlineTerm').value.trim(), lang=$('offlineLang').value;if(!term){status.textContent='Inserisci una parola da cercare.';return}
- const button=$('offlineDownload');button.disabled=true;status.textContent='Ricerca online e download in corso…';let found=[];
- try{
- for(const path of ['api','v1']){try{const res=await fetch('https://api.arasaac.org/'+path+'/pictograms/'+encodeURIComponent(lang)+'/search/'+encodeURIComponent(term),{cache:'no-store'});if(!res.ok)continue;const data=await res.json();found=Array.isArray(data)?data:(data.pictograms||data.results||[]);if(found.length)break}catch(e){}}
- if(!found.length)throw new Error('Nessun risultato ARASAAC o connessione non disponibile');
- const saved=[],errors=[];for(const item of found.slice(0,12)){const id=item._id||item.id;if(!id)continue;const label=item.keywords?.find(k=>k.keyword)?.keyword||term;try{const res=await fetch('https://static.arasaac.org/pictograms/'+encodeURIComponent(id)+'/'+encodeURIComponent(id)+'_500.png');if(!res.ok)throw Error('HTTP '+res.status);const blob=await res.blob();if(!blob.type.startsWith('image/'))throw Error('Risposta non immagine');saved.push({key:lang+':'+id,id:String(id),lang,label,blob})}catch(e){errors.push(String(id))}}
- if(!saved.length)throw new Error('Non è stato possibile scaricare le immagini');await putAll(saved);show(await getAll());status.textContent+=' Scaricati ora: '+saved.length+(errors.length?' · Non riusciti: '+errors.length:'');
- }catch(e){status.textContent='Download non riuscito: '+e.message}finally{button.disabled=false}
- });
-})();
 </script>
 </body></html>');
   doc.close();
