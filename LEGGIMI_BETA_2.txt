@@ -1,0 +1,11 @@
+PictoFacile Beta 2 - TEST LIBRERIA OFFLINE
+
+1. Carica i file su GitHub Pages in un repository di test (HTTPS).
+2. Apri la PWA con Internet, cerca una parola nella sezione Libreria ARASAAC offline e scarica le immagini.
+3. Premi Mostra immagini salvate e controlla il conteggio.
+4. Disattiva Internet, riapri la PWA e premi Mostra immagini salvate.
+5. Non cancellare i dati del sito: IndexedDB contiene le immagini.
+
+Questa beta non integra ancora i pittogrammi offline nelle frasi, storie o routine. Non modifica la v0.8.106 originale. L’API e il download richiedono Internet. L’esito va testato nel browser reale.
+
+ARASAAC: Sergio Palao / Governo di Aragona, CC BY-NC-SA 4.0.

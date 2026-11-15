@@ -1,0 +1,40 @@
+PictoFacile – BETA 1 (test privati, 15 novembre 2026)
+
+CONTENUTO
+index.html: copia della CAA Duo v0.8.106 con nome visibile PictoFacile; logica e archiviazione non migrate.
+manifest.webmanifest: nome, colori, icone, avvio installabile.
+sw.js: salvataggio offline dei file locali dell’app (NON dei risultati online).
+icons/: icone 192 e 512 e versioni maskable.
+
+COME PROVARE
+1. Estrai lo ZIP. Non aprire index.html con doppio clic per testare la PWA: con file:// il Service Worker non funziona.
+2. Crea un NUOVO repository GitHub, ad esempio pictofacile-beta, e carica nella radice TUTTI i file e la cartella icons. Non caricare file JSON personali.
+3. Settings > Pages > Deploy from a branch > main > /(root) > Save. Attendi l’URL HTTPS pubblicato.
+4. Apri l’URL in Edge/Chrome; se disponibile, usa l’opzione Installa app nel menu o barra degli indirizzi. Su iPad/iPhone: Safari > Condividi > Aggiungi alla schermata Home.
+5. Apri l’app online almeno una volta; attendi che finisca di caricare. Poi disattiva Internet e riaprila. Prova routine, frasi, storie, immagini personali, TTS e backup.
+
+LIMITI E ATTENZIONI
+- La ricerca di nuovi pittogrammi ARASAAC e ogni servizio remoto richiedono Internet.
+- Le immagini remote non sono garantite offline: quelle già salvate come dati locali potrebbero essere disponibili, da verificare.
+- Le voci TTS dipendono dal dispositivo e alcune possono richiedere rete.
+- Il Service Worker non esegue il backup di IndexedDB o localStorage. Fai backup prima di ogni aggiornamento.
+- Dati in file://, localhost e su GitHub Pages hanno origini diverse: i dati NON si trasferiscono automaticamente. Prova l’importazione dei backup in una copia di test prima di affidare dati reali.
+- GitHub Pages è pubblico anche se condividi l’URL soltanto con conoscenti.
+- Il nome visibile cambia, ma alcune etichette interne e le chiavi di archiviazione conservano CAA Duo per compatibilità.
+- La PWA è una beta non verificata su tutti i dispositivi; non è un’app nativa .exe o .apk.
+- Le licenze ARASAAC richiedono verifica per la distribuzione; mantenere attribuzioni e condizioni CC BY-NC-SA.
+- Aggiornamenti: cache-first per i file locali; per vedere una nuova versione potrebbe servire chiudere e riaprire l’app, o cancellare i dati del sito (ATTENZIONE: questo può cancellare anche i dati personali locali!).
+
+TEST SUGGERITI
+[ ] Installazione da HTTPS
+[ ] Avvio senza Internet dopo primo caricamento
+[ ] Creazione e salvataggio di una routine
+[ ] Chiusura e riapertura: routine presente
+[ ] Visualizzazione e scorrimento routine
+[ ] Immagini personali offline
+[ ] Lettura vocale offline, indicando la voce provata
+[ ] Esportazione backup e ripristino in un ambiente di prova
+[ ] Ricerca ARASAAC online
+[ ] Test Edge Windows, Android Chrome, iPad Safari, macOS Safari/Chrome, Linux Chromium
+
+NON MODIFICATO: il file originale v0.8.106 resta separato.
